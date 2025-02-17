@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <!-- Определение RollingFile аппендера -->
+        <RollingFile name="RollingFile" fileName="logs/hippodrome.log"
+                     filePattern="logs/hippodrome.%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1} %L %m %n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- Ротация каждый день -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <!-- Настройка автоматического удаления старых файлов -->
+                <Delete basePath="logs" maxDepth="2">
+                    <!-- Удаление только файлов, соответствующих шаблону имени -->
+                    <IfFileName glob="hippodrome-*.log"/>
+                    <!-- Удаление файлов старше 30 дней -->
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Корневой логгер -->
+        <Root level="info">
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
